@@ -1,0 +1,41 @@
+# training hyper-parameters
+num_epochs : 200
+batch_size : 128
+dropout_keep_prob : 0.8
+clip_value : 100
+learning_rate : 0.05
+l2 : 0.001
+seq_length : 100
+optimizer : adagrad
+early_stop_step : 50000000
+
+# embeddings hyper-parameters
+threshold : 0
+embedding_size : 300
+embedding_normalize : 1
+
+# layers hyper-parameters
+hidden_size : 200
+attention_size : 200
+
+# report hyper-parameters
+eval_batch : 4000
+
+# IO path
+## embeddings
+vocab_path : ./SNLI/clean data/vocab.txt
+embedding_path : ./SNLI/clean data/embeddings.pkl
+
+## dataset
+trainset_path : ./SNLI/clean data/train.txt
+devset_path : ./SNLI/clean data/dev.txt
+testset_path : ./SNLI/clean data/test.txt
+
+## reports
+save_path : ./model/checkpoint
+best_path : ./model/bestval
+log_path : ./config/log/log
+tfboard_path : ./tensorboard
+
+## config
+config_path : ./config/config.yaml
