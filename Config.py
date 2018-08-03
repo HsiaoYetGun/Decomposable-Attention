@@ -112,7 +112,7 @@ class ModelConfig():
                                    help='Vocabulary file')
         self.__parser.add_argument('--embedding_path',
                                    '-embp',
-                                   default='./SNLI/clean data/embeddings',
+                                   default='./SNLI/clean data/embeddings.pkl',
                                    type=str,
                                    help='Pre-trained word embeddings path')
 
@@ -162,14 +162,12 @@ class ModelConfig():
 
     # read config information from config file
     def __readConfig(self):
-        '''
         arg = self.__parser.parse_args()
         with open(arg.config_path) as conf:
             config_dict = yaml.load(conf)
             for key, value in config_dict.items():
                 sys.argv.append('--' + key)
                 sys.argv.append(str(value))
-        '''
         self.arg = self.__parser.parse_args()
 
     # print config information

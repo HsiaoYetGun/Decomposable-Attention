@@ -1,5 +1,5 @@
 '''
-Created on August 1, 2018
+Created on July 20, 2018
 @author : hsiaoyetgun (yqxiao)
 '''
 # coding: utf-8
@@ -10,6 +10,7 @@ from __future__ import print_function
 import functools
 import tensorflow as tf
 import numpy as np
+import os
 from datetime import timedelta
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import OneHotEncoder
@@ -106,9 +107,14 @@ def build_vocab(dataPath, vocabPath, threshold = 0, lowercase = True):
             try:
                 if lowercase:
                     line = line.lower()
-                words = line.strip().split()
-                words = words[1:]
-                for word in list(words):
+                tempLine = line.strip().split('||')
+                l1 = tempLine[1][:-1]
+                l2 = tempLine[2][:-1]
+                words1 = l1.split(' ')
+                for word in list(words1):
+                    cnt[word] += 1
+                words2 = l2.split(' ')
+                for word in list(words2):
                     cnt[word] += 1
             except:
                 pass
@@ -184,7 +190,7 @@ def sentence2Index(dataPath, vocabDict, maxLen = 100, lowercase = True):
     s1Mask = np.asarray(s1Mask, np.int32)
     s2Mask = np.asarray(s2Mask, np.int32)
     labelList = np.asarray(labelList, np.int32)
-    return s1Pad, s1MaskList, s2Pad, s2MaskList, labelList
+    return s1Pad, s1Mask, s2Pad, s2Mask, labelList
 
 # generator : generate a batch of data
 def next_batch(premise, premise_mask, hypothesis, hypothesis_mask, y, batchSize = 64, shuffle = True):
@@ -299,12 +305,15 @@ def print_args(args, log_file):
 
 if __name__ == '__main__':
     # dataset preprocessing
+    if not os.path.exists('./SNLI/clean data/'):
+        os.makedirs('./SNLI/clean data/')
+
     convert_data('./SNLI/raw data/snli_1.0_train.jsonl', './SNLI/clean data/train.txt')
     convert_data('./SNLI/raw data/snli_1.0_dev.jsonl', './SNLI/clean data/dev.txt')
     convert_data('./SNLI/raw data/snli_1.0_test.jsonl', './SNLI/clean data/test.txt')
 
     # embedding preprocessing
-    convert_embeddings('./SNLI/raw data/glove.840B.300d.txt', './SNLI/clean data/embeddings')
+    convert_embeddings('./SNLI/raw data/glove.840B.300d.txt', './SNLI/clean data/embeddings.pkl')
 
     # vocabulary preprocessing
     build_vocab('./SNLI/clean data/train.txt', './SNLI/clean data/vocab.txt')
