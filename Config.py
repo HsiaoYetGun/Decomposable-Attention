@@ -65,6 +65,7 @@ class ModelConfig():
         self.__parser.add_argument('--early_stop_step',
                                    '-ess',
                                    default=50000000,
+                                   type=int,
                                    help='Early stop condition')
 
         # embeddings hyper-parameters
